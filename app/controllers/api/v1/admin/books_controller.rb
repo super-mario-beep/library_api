@@ -1,6 +1,6 @@
 class Api::V1::Admin::BooksController < ApplicationController
   before_action :authorized_admin
-  before_action :set_book, only: [:update, :destroy]
+  before_action :set_book, only: [:update, :show, :destroy]
 
   # GET /books
   def index
@@ -21,6 +21,11 @@ class Api::V1::Admin::BooksController < ApplicationController
     end
   end
 
+  # GET /books/1
+  def show
+    render json: @book
+  end
+  
   # PATCH /books/1
   def update
     if @book.update(book_params)
@@ -30,13 +35,18 @@ class Api::V1::Admin::BooksController < ApplicationController
     end
   end
 
-  #DELETE /books/1
+  # DELETE /books/1
   def destroy
     if @book.destroy
       render statu: 200
     else
       render json: @book.errors, status: :unprocessable_entity
     end
+  end
+
+  # GET /books/outofstock
+  def out_of_stock
+    render json: Book.all.where(copies: 0), status: 200
   end
 
   private

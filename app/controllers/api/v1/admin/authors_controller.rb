@@ -1,6 +1,6 @@
 class Api::V1::Admin::AuthorsController < ApplicationController
   before_action :authorized_admin
-  before_action :set_author, only: [:update, :destroy]
+  before_action :set_author, only: [:update, :show, :destroy]
 
   # GET /authors
   def index
@@ -17,6 +17,11 @@ class Api::V1::Admin::AuthorsController < ApplicationController
     else
       render json: {error: "Error creating author"}
     end
+  end
+
+  # GET /authors/1
+  def show
+    render json: @author
   end
 
   # PATCH /authors/1

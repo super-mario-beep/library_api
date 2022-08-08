@@ -8,6 +8,8 @@ Rails.application.routes.draw do
       namespace :admin do
         resources :authors
         resources :books
+        get '/outofstock' => 'books#out_of_stock'
+        resources :loans
       end
     end
   end

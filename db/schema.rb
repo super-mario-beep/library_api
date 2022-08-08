@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_08_122307) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_08_140129) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,6 +29,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_08_122307) do
     t.index ["author_id"], name: "index_books_on_author_id"
   end
 
+  create_table "loans", force: :cascade do |t|
+    t.bigint "book_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_loans_on_book_id"
+    t.index ["user_id"], name: "index_loans_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -43,4 +52,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_08_122307) do
   end
 
   add_foreign_key "books", "authors"
+  add_foreign_key "loans", "books"
+  add_foreign_key "loans", "users"
 end
