@@ -9,15 +9,9 @@ class Api::V1::Admin::LoansController < ApplicationController
 
   # POST /loans
   def create
-    @user = User.find_by(id: loan_params[:user_id])
-    @book = Book.find_by(id: loan_params[:book_id])
-    if @user.loan.count == 3
-      render json: {error: "Reached maximum number of loans" }, status: 200
-      return
-    end
-    if @book.copies == 0
-      render json: {error: "This book is out of stock" }, status: 200
-      return
+    ckeck = check_is_loan_available
+    if !check.blank?
+      render json: {error: ckeck}, status: :unprocessable_entity
     end
 
     loan = Loan.new(
@@ -25,6 +19,9 @@ class Api::V1::Admin::LoansController < ApplicationController
       book_id: loan_params[:book_id]
     )
     if loan.save
+      @book.copies -= 1
+      @book.save
+
       render json: loan, status: 200
     else
       render json: {error: "Error creating loan" }, status: :unprocessable_entity
@@ -48,6 +45,10 @@ class Api::V1::Admin::LoansController < ApplicationController
   # DELETE /loans/1
   def destroy
     if @loan.destroy
+      @book = Book.find_by(id: @loan.book_id)
+      @book.copies += 1
+      @book.save
+
       render statu: 200
     else
       render json: @loan.errors, status: :unprocessable_entity

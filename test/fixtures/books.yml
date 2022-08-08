@@ -1,9 +1,25 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  title: MyString
-  copies: 1
+  id: 1
+  title: "Book of Ra"
+  copies: 3
+  author_id: 1
 
 two:
-  title: MyString
+  id: 2
+  title: "Sunrise"
   copies: 1
+  author_id : 2
+
+three: 
+  id: 3
+  title: "Zodiac"
+  copies: 0
+  author_id : 1
+
+four:
+  id: 4
+  title: "Terminator"
+  copies: 2
+  author_id : 1
