@@ -1,14 +1,13 @@
 class Api::V1::Admin::AuthorsController < ApplicationController
   before_action :authorized_admin
+  before_action :set_author, only: [:update, :destroy]
 
   # GET /authors
-  # GET /authors?search=sun
   def index
     render json: Author.all, status: 200
   end
 
   # POST /authors
-  # BODY { "author": {"name": "mario duric"}}
   def create
     author = Author.new(
       name: author_params[:name].titleize
@@ -20,22 +19,32 @@ class Api::V1::Admin::AuthorsController < ApplicationController
     end
   end
 
+  # PATCH /authors/1
   def update
-
+    if @author.update(author_params)
+      render json: @author
+    else
+      render json: @author.errors, status: :unprocessable_entity
+    end
   end
 
+  # DELETE /authors/1
   def destroy
-
+    if @author.destroy
+      render statu: 200
+    else
+      render json: @author.errors, status: :unprocessable_entity
+    end
   end
 
   private
 
-  def author_params
-    params.require(:author).permit([
-      :name
-    ])
+  def set_author
+    @author = Author.find(params[:id])
   end
 
-
+  def author_params
+    params.require(:author).permit(:name)
+  end
 end
   

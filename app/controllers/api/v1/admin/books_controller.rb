@@ -1,5 +1,6 @@
 class Api::V1::Admin::BooksController < ApplicationController
   before_action :authorized_admin
+  before_action :set_book, only: [:update, :destroy]
 
   # GET /books
   def index
@@ -7,7 +8,6 @@ class Api::V1::Admin::BooksController < ApplicationController
   end
 
   # POST /books
-  # BODY { "book": {"title": "Golden", "copies": 2, "author_id": 1}}
   def create
     book = Book.new(
       title: book_params[:title],
@@ -21,21 +21,35 @@ class Api::V1::Admin::BooksController < ApplicationController
     end
   end
 
+  # PATCH /books/1
   def update
-
+    if @book.update(book_params)
+      render json: @book
+    else
+      render json: @book.errors, status: :unprocessable_entity
+    end
   end
 
+  #DELETE /books/1
   def destroy
-
+    if @book.destroy
+      render statu: 200
+    else
+      render json: @book.errors, status: :unprocessable_entity
+    end
   end
 
   private
 
+  def set_book
+    @book = Book.find(params[:id])
+  end
+
   def book_params
-    params.require(:book).permit([
+    params.require(:book).permit(
       :title,
       :copies,
       :author_id
-    ])
+    )
   end
 end
