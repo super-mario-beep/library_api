@@ -1,18 +1,19 @@
 class Api::V1::AuthorsController < ApplicationController
 
-  # GET /users
-  # GET /users?search=rio
+  # GET /authors
+  # GET /authors?search=sun
   def index
     if params[:search].blank?
       authors = Author.all
     else
-      @parameter = params[:search].downcase
-      authors = Author.all.where("lower(name) LIKE :search", search: "%#{@parameter}%")
+      @parameter = "%" + params[:search].downcase + "%"
+      authors = Author.all.where("lower(name) LIKE :search", search: "#{@parameter}")
+      authors += Author.all.where("id IN (SELECT author_id FROM books WHERE lower(title) LIKE :search)", search: "#{@parameter}")
     end
     render json: authors
   end
 
-  # POST /users
+  # POST /authors
   # BODY { "author": {"name": "mario duric"}}
   def create
     author = Author.new(
