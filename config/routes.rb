@@ -11,6 +11,9 @@ Rails.application.routes.draw do
         get '/outofstock' => 'books#out_of_stock'
         resources :loans
       end
+      namespace :member do
+        get '/' => 'history#index'
+      end
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
