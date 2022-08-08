@@ -1,16 +1,10 @@
-class Api::V1::AuthorsController < ApplicationController
+class Api::V1::Admin::AuthorsController < ApplicationController
+  before_action :authorized_admin
 
   # GET /authors
   # GET /authors?search=sun
   def index
-    if params[:search].blank?
-      authors = Author.all
-    else
-      @parameter = "%" + params[:search].downcase + "%"
-      authors = Author.all.where("lower(name) LIKE :search", search: "#{@parameter}")
-      authors += Author.all.where("id IN (SELECT author_id FROM books WHERE lower(title) LIKE :search)", search: "#{@parameter}")
-    end
-    render json: authors
+    render json: Author.all, status: 200
   end
 
   # POST /authors
@@ -24,6 +18,14 @@ class Api::V1::AuthorsController < ApplicationController
     else
       render json: {error: "Error creating author"}
     end
+  end
+
+  def update
+
+  end
+
+  def destroy
+
   end
 
   private

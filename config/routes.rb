@@ -1,8 +1,14 @@
 Rails.application.routes.draw do
+  devise_for :users
   namespace :api do
     namespace :v1 do
-      resources :authors, only: [:index, :create]
-      resources :books, only: [:index, :create]
+      get '/books' => 'catalog#search_authors'
+      get '/authors' => 'catalog#search_books'
+      resources :sessions, only: [:create, :destroy]
+      namespace :admin do
+        resources :authors
+        resources :books
+      end
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

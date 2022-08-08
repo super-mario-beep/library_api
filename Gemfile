@@ -46,5 +46,10 @@ group :development do
   # gem "spring"
 end
 
+gem 'devise'
+
+gem 'bcrypt', '~> 3.1.7'
+
+gem 'jwt'
 
 gem "pg", "~> 1.4"
