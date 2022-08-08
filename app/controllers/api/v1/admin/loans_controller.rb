@@ -4,13 +4,13 @@ class Api::V1::Admin::LoansController < ApplicationController
 
   # GET /loans
   def index
-    render json: Load.all, status: 200
+    render json: Loan.all, status: 200
   end
 
   # POST /loans
   def create
-    ckeck = check_is_loan_available
-    if !check.blank?
+    @ckeck = Loan.loan_unavailable(loan_params[:user_id], loan_params[:book_id])
+    if !@check.blank?
       render json: {error: ckeck}, status: :unprocessable_entity
     end
 
@@ -19,6 +19,7 @@ class Api::V1::Admin::LoansController < ApplicationController
       book_id: loan_params[:book_id]
     )
     if loan.save
+      @book = Book.find_by(id: loan_params[:book_id])
       @book.copies -= 1
       @book.save
 

@@ -12,8 +12,7 @@ class Api::V1::Admin::LoansControllerTest < ActionDispatch::IntegrationTest
     user = users(:one)
     book = books(:one)
 
-    loan = Loan.new
-    assert_equal(loan.loan_unavailable(user.id, book.id), "Reached maximum number of loans")
+    assert_equal(Loan.loan_unavailable(user.id, book.id), "Reached maximum number of loans")
   end
 
   test "should not give loan of book with copies" do
@@ -21,7 +20,6 @@ class Api::V1::Admin::LoansControllerTest < ActionDispatch::IntegrationTest
     book = books(:three) #out of stock
     user.loan.destroy_all
 
-    loan = Loan.new
-    assert_equal(loan.loan_unavailable(user.id, book.id), "This book is out of stock")
+    assert_equal(Loan.loan_unavailable(user.id, book.id), "This book is out of stock")
   end
 end

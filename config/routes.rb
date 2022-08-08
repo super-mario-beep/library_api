@@ -2,8 +2,8 @@ Rails.application.routes.draw do
   devise_for :users
   namespace :api do
     namespace :v1 do
-      get '/books' => 'catalog#search_authors'
-      get '/authors' => 'catalog#search_books'
+      get '/books' => 'catalog#search_books'
+      get '/authors' => 'catalog#search_authors'
       resources :sessions, only: [:create, :destroy]
       namespace :admin do
         resources :authors

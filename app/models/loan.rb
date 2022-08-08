@@ -5,7 +5,7 @@ class Loan < ApplicationRecord
   validates :book_id, presence: true, numericality: { only_integer: true}
   validates :user_id, presence: true, numericality: { only_integer: true }
 
-  def loan_unavailable(user_id, book_id)
+  def self.loan_unavailable(user_id, book_id)
     @user = User.find_by(id: user_id)
     @book = Book.find_by(id: book_id)
     if @user.loan.count == 3
