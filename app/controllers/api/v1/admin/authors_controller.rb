@@ -1,5 +1,5 @@
-class Api::V1::Admin::AuthorsController < ApplicationController
-  before_action :authorized_admin
+class AuthorsController < ApplicationController
+  #before_action :authorized_admin
   before_action :set_author, only: [:update, :show, :destroy]
 
   # GET /authors
