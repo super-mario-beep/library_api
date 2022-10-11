@@ -24,6 +24,19 @@ RSpec.describe 'AuthorsController', type: :request do
         expect(response).to have_http_status(:success)
       end
     end
+
+    context 'when name does not exists' do
+      it 'returns error message and code' do
+        post '/api/v1/admin/author', params: { 
+          author: { title: 'David Baldacci' } 
+        }
+
+        aggregate_failures "testing response" do
+          expect(JSON.parse(response.body)['error']).to eq('Error creating author')
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
+      end
+    end
   end
 
   describe '#show' do
@@ -52,12 +65,26 @@ RSpec.describe 'AuthorsController', type: :request do
         expect(response).to have_http_status(:success)
       end
     end
+
+    context 'when name does not exists' do
+      it 'returns' do
+        author = Author.create( { name: 'David Baldacci' } )
+        patch '/api/v1/admin/author/4', params: { 
+          author: { title: 'Stephen King' } 
+        }
+
+        aggregate_failures "testing response" do
+          expect(JSON.parse(response.body)['name']).to eq('David Baldacci')
+          expect(response).to have_http_status(:success)
+        end
+      end
+    end
   end
 
   describe '#delete' do
     it 'returns a successful response for destroy' do
       author = Author.create( { name: 'Stephen King' } )
-      delete '/api/v1/admin/author/4'
+      delete '/api/v1/admin/author/5'
 
       aggregate_failures "testing response" do
         expect(response).to have_http_status(:success)

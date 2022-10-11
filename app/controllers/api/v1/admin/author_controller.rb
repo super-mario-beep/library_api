@@ -10,12 +10,12 @@ class Api::V1::Admin::AuthorController < ApplicationController
   # POST /authors
   def create
     author = Author.new(
-      name: author_params[:name].titleize
+      name: author_params[:name]&.titleize
     )
     if author.save
       render json: author, status: 200
     else
-      render json: {error: "Error creating author"}
+      render json: {error: "Error creating author"}, status: :unprocessable_entity
     end
   end
 
