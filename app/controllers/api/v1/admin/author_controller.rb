@@ -1,4 +1,4 @@
-class AuthorsController < ApplicationController
+class Api::V1::Admin::AuthorController < ApplicationController
   #before_action :authorized_admin
   before_action :set_author, only: [:update, :show, :destroy]
 

@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       get '/authors' => 'catalog#search_authors'
       resources :sessions, only: [:create, :destroy]
       namespace :admin do
-        resources :authors
+        resources :author
         resources :books
         get '/outofstock' => 'books#out_of_stock'
         resources :loans
