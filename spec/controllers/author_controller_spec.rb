@@ -2,9 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'AuthorsController', type: :request do
 
-  before(:context) do
-    @author = Author.create({ name: 'Ann Cleeves' })
-  end
+  let(:author) { Author.create({ name: 'Ann Cleeves' }) }
 
   describe '#index' do
     it 'returns a successful response for index', :aggregate_failures do
@@ -39,18 +37,20 @@ RSpec.describe 'AuthorsController', type: :request do
 
   describe '#show' do
     it 'returns a successful response for show', :aggregate_failures  do
-      get '/api/v1/admin/author/1'
+      author
+      get '/api/v1/admin/author/2'
 
       current_author = JSON.parse(response.body)
-      expect(current_author['id']).to eq(@author.id)
-      expect(current_author['name']).to eq(@author.name)
+      expect(current_author['id']).to eq(author.id)
+      expect(current_author['name']).to eq(author.name)
       expect(response).to have_http_status(:success)
     end
   end
 
   describe '#update' do
     it 'returns a successful response for update', :aggregate_failures  do
-      patch '/api/v1/admin/author/1', params: { 
+      author
+      patch '/api/v1/admin/author/3', params: { 
         author: { name: 'Stephen King' } 
       }
 
@@ -60,7 +60,8 @@ RSpec.describe 'AuthorsController', type: :request do
 
     context 'when name does not exists' do
       it 'returns a sucessfull response with same name', :aggregate_failures  do
-        patch '/api/v1/admin/author/1', params: { 
+        author
+        patch '/api/v1/admin/author/4', params: { 
           author: { title: 'Stephen King' } 
         }
 
@@ -72,7 +73,8 @@ RSpec.describe 'AuthorsController', type: :request do
 
   describe '#delete' do
     it 'returns a successful response for destroy', :aggregate_failures  do
-      delete '/api/v1/admin/author/1'
+      author
+      delete '/api/v1/admin/author/5'
 
       expect(response).to have_http_status(:success)
     end
