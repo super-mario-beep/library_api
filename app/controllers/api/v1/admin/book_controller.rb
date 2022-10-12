@@ -1,5 +1,5 @@
-class Api::V1::Admin::BooksController < ApplicationController
-  before_action :authorized_admin
+class Api::V1::Admin::BookController < ApplicationController
+  #before_action :authorized_admin
   before_action :set_book, only: [:update, :show, :destroy]
 
   # GET /books
@@ -17,7 +17,7 @@ class Api::V1::Admin::BooksController < ApplicationController
     if book.save
       render json: book, status: 200
     else
-      render json: {error: "Error creating book"}
+      render json: {error: "Error creating book"}, status: :unprocessable_entity
     end
   end
 
