@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'AuthorsController', type: :request do
 
-  let(:author) { Author.create({ name: 'Ann Cleeves' }) }
+  let(:author) { create(:author) }
 
   describe '#index' do
     it 'returns a successful response for index', :aggregate_failures do
