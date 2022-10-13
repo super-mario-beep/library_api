@@ -62,12 +62,42 @@ RSpec.describe 'BooksController', type: :request do
 
   describe '#show' do
     it 'returns a successful response for show', :aggregate_failures do
-      author
       book
       get '/api/v1/admin/book/2'
 
-      current_author = JSON.parse(response.body)
+      expect(JSON.parse(response.body)['title']).to eq('Don Quixote')
       expect(response).to have_http_status(:success)
     end
   end
+
+  describe '#update' do
+    it 'returns a successful response for update', :aggregate_failures do
+      book
+      patch '/api/v1/admin/book/3', params: { 
+        book: { copies: 9 } 
+      }
+
+      expect(JSON.parse(response.body)['copies']).to eq(9)
+      expect(response).to have_http_status(:success)
+    end
+
+    context 'when copies are smaller then 0' do
+      it 'returns error message' do
+        book
+        patch '/api/v1/admin/book/4', params: { 
+          book: { copies: -1 } 
+        }
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+  end
+
+  describe '#delete' do
+  it 'returns a successful response for destroy', :aggregate_failures  do
+    book
+    delete '/api/v1/admin/book/5'
+
+    expect(response).to have_http_status(:success)
+  end
+end
 end
