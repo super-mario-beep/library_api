@@ -7,7 +7,7 @@ Rails.application.routes.draw do
       resources :sessions, only: [:create, :destroy]
       namespace :admin do
         resources :author
-        resources :books
+        resources :book
         get '/outofstock' => 'books#out_of_stock'
         resources :loans
       end
